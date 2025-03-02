@@ -1,6 +1,7 @@
 package com.gabrielgodoi.course.services;
 
 import com.gabrielgodoi.course.entities.User;
+import com.gabrielgodoi.course.exceptions.ResourceNotFoundException;
 import com.gabrielgodoi.course.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class UserService {
 
     public User findOne(Long id) {
         Optional<User> user = this.userRepository.findById(id);
-        return user.get();
+        return user.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public User insert(User user) {
