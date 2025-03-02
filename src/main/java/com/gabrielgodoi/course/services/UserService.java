@@ -4,6 +4,7 @@ import com.gabrielgodoi.course.entities.User;
 import com.gabrielgodoi.course.exceptions.DatabaseException;
 import com.gabrielgodoi.course.exceptions.ResourceNotFoundException;
 import com.gabrielgodoi.course.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -43,9 +44,13 @@ public class UserService {
 
     public User update(Long id, User user) {
         // esse método apenas monitora um objeto do banco de dados -> preparando o objeto para que possamos realizar operações com esse objeto no banco de dados
-        User entity = this.userRepository.getReferenceById(id);
-        updateData(entity, user);
-        return this.userRepository.save(entity);
+        try{
+            User entity = this.userRepository.getReferenceById(id);
+            updateData(entity, user);
+            return this.userRepository.save(entity);
+        } catch (EntityNotFoundException e) {
+           throw new ResourceNotFoundException(id);
+        }
     }
 
     private void updateData(User entity, User user) {
