@@ -23,7 +23,24 @@ public class UserService {
         return user.get();
     }
 
-    public User insert(User user){
+    public User insert(User user) {
         return this.userRepository.save(user);
+    }
+
+    public void delete(Long id) {
+        this.userRepository.deleteById(id);
+    }
+
+    public User update(Long id, User user){
+        // esse método apenas monitora um objeto do banco de dados -> preparando o objeto para que possamos realizar operações com esse objeto no banco de dados
+        User entity = this.userRepository.getReferenceById(id);
+        updateData(entity, user);
+        return this.userRepository.save(entity);
+    }
+
+    private void updateData(User entity, User user) {
+        entity.setName(user.getName());
+        entity.setEmail(user.getEmail());
+        entity.setPhone(user.getPhone());
     }
 }
