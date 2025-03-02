@@ -1,7 +1,6 @@
 package com.gabrielgodoi.course.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gabrielgodoi.course.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 
@@ -29,7 +28,10 @@ public class Order implements Serializable {
     private User client;
 
     @OneToMany(mappedBy = "id.order")
-    private Set<OrderItem> items = new HashSet<>();
+    private Set<OrderItem> OrderItems = new HashSet<>();
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
 
     public Order() {
     }
@@ -74,8 +76,26 @@ public class Order implements Serializable {
         this.client = client;
     }
 
-    public Set<OrderItem> getItems() {
-        return this.items;
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    public Set<OrderItem> getOrderItems() {
+        return this.OrderItems;
+    }
+
+    public Double getTotal(){
+        Double sum = 0.0;
+        for (OrderItem orderItem : this.OrderItems){
+            sum += orderItem.getSubTotal();
+        }
+
+        return sum;
     }
 
     @Override

@@ -72,6 +72,14 @@ public class TestConfig implements CommandLineRunner {
         // cadastrando usuários
         this.userRepository.saveAll(Arrays.asList(u1, u2));
 
+
+        // instancia de pagamento e relacionamento com o pedido em questão
+        Payment pay1 = new Payment(null, Instant.parse("2019-06-20T21:53:07Z"), o1);
+
+        // associação do pay1 com o pedido em questão
+        o1.setPayment(pay1);
+
+
         // cadastrando pedidos
         this.orderRepository.saveAll(Arrays.asList(o1, o2, o3));
 

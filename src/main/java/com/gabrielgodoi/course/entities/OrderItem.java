@@ -55,13 +55,17 @@ public class OrderItem implements Serializable {
         this.id.setOrder(order);
     }
 
-    @JsonIgnore
     public Product getProduct() {
         return this.id.getProduct();
     }
 
     public void setProduct(Product product) {
         this.id.setProduct(product);
+    }
+
+
+    public Double getSubTotal() {
+        return price * quantity;
     }
 
     @Override
